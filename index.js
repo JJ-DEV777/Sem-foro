@@ -1,19 +1,16 @@
-// index.js
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
-app.use(express.json()); // já substitui body-parser json
+app.use(express.json()); 
 
-// Dados em memória
 let logs = [];
 let registros = [];
 let usuarios = [];
 let acoesUsuario = [];
 
-// Rota para registrar ações gerais
 app.post('/acao', (req, res) => {
   const { usuario, acao } = req.body;
   if (!usuario || !acao) {
@@ -28,12 +25,10 @@ app.post('/acao', (req, res) => {
   res.status(200).json({ mensagem: 'Ação registrada com sucesso!' });
 });
 
-// Rota para pegar logs
 app.get('/logs', (req, res) => {
   res.json(logs);
 });
 
-// Rota de login
 const usuariosPermitidos = {
   admin: '123456',
   lilian: 'senha123',
@@ -54,7 +49,6 @@ app.post('/login', (req, res) => {
   }
 });
 
-// Rota para slider
 app.post('/slider', (req, res) => {
   const { usuario, inicio, fim } = req.body;
 
@@ -69,7 +63,6 @@ app.post('/slider', (req, res) => {
   return res.status(200).json({ sucesso: true, mensagem: 'Valores registrados com sucesso' });
 });
 
-// Rota para registro de novos usuários
 app.post('/registro', (req, res) => {
   const { nome, telefone, email, senha } = req.body;
 
@@ -77,7 +70,6 @@ app.post('/registro', (req, res) => {
     return res.status(400).json({ sucesso: false, mensagem: 'Dados inválidos ou incompletos' });
   }
 
-  // Verificar se email já existe
   const usuarioExiste = usuarios.find(u => u.email === email);
   if (usuarioExiste) {
     return res.status(400).json({ sucesso: false, mensagem: 'Email já cadastrado' });
@@ -89,7 +81,6 @@ app.post('/registro', (req, res) => {
   return res.status(201).json({ sucesso: true, mensagem: 'Usuário cadastrado com sucesso!' });
 });
 
-// Rota para registrar ações do usuário
 app.post('/registrar-acao', (req, res) => {
   const { usuario, acao } = req.body;
 
@@ -110,7 +101,6 @@ app.post('/registrar-acao', (req, res) => {
   return res.json({ sucesso: true, mensagem: 'Ação registrada com sucesso!' });
 });
 
-// Inicia servidor uma única vez
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
